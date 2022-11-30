@@ -1,1 +1,1 @@
-# ews
+# terraform-provider-ews
