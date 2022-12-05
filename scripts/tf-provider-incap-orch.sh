@@ -120,6 +120,13 @@ install(){
   }
 }" > ~/.terraformrc
 
+#provider_installation {
+#  filesystem_mirror {
+#    path    = "/Users/raphael.attal/workspace/go/plugins"
+#    include = ["registry.terraform.io/terraform-providers/ews"]
+#  }
+#}
+
     PROVIDER_VERSION=`git --git-dir=$PROVIDER_GIT_LOCAL/.git tag | tail -1 | cut -c2-`
     log_info "${FUNCNAME[0]}" "Git provider version $PROVIDER_VERSION"
 

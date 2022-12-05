@@ -27,14 +27,15 @@ func resourceEws() *schema.Resource {
 				Required:    true,
 			},
 			"lambda_name": {
-				Description: "lambda zip",
+				Description: "lambda name",
 				Type:        schema.TypeString,
 				Required:    true,
 			},
 			"filter_path": {
 				Description: "lambda zip",
 				Type:        schema.TypeString,
-				Required:    true,
+				Optional:    true,
+				Default:     "/",
 			},
 			"deployed": {
 				Description: "is lambda deployed",
@@ -59,6 +60,7 @@ func resourceEwsCreate(d *schema.ResourceData, m interface{}) error {
 
 	_, err := client.CompileWebAssembly(
 		d.Get("account_id").(string),
+		d.Get("lambda_name").(string),
 		ewsApiDTO,
 	)
 

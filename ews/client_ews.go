@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"net/url"
 )
 
 //Step 1: Compile Rust source code to WebAssembly
@@ -25,11 +24,10 @@ type WASMStruct struct {
 }
 
 type ApiStatus struct {
-	ID      string         `json:"id"`
-	Status  string         `json:"status"`
-	Code    string         `json:"code"`
-	Message string         `json:"message"`
-	Source  ApiErrorSource `json:"source"`
+	ID      string `json:"id"`
+	Status  string `json:"status"`
+	Code    string `json:"code"`
+	Message string `json:"message"`
 }
 
 // EwsApiDTO - Same DTO for: GET response, POST request, and POST response
@@ -38,16 +36,19 @@ type EwsApiDTO struct {
 	Data   WASMStruct  `json:"data"`
 }
 
-func (c *Client) CompileWebAssembly(accountID string, requestDTO EwsApiDTO) (*EwsApiDTO, error) {
+func (c *Client) CompileWebAssembly(accountID, lambdaName string, requestDTO EwsApiDTO) (*EwsApiDTO, error) {
 	log.Printf("[INFO] Compile WebAssembly for accountID: %s\n", accountID)
 
 	log.Printf("[INFO]  requestDTO: %+v\n", requestDTO)
 
 	wasmJSON, err := json.Marshal(requestDTO)
 	log.Printf("[INFO]  wasmJSON: %v\n", string(wasmJSON))
-	reqURL := fmt.Sprintf("%s/%s?accountId=%s", c.config.BaseURLews, endpointWASMCompile, accountID)
+	reqURL := fmt.Sprintf("%s/%s?accountId=%s", c.config.baseURLEWS, endpointWASMCompile, accountID)
 	log.Printf("[INFO]  reqURL: %v\n", reqURL)
-	resp, err := c.DoJsonRequestWithHeaders(http.MethodPost, reqURL, wasmJSON, CompileWASM)
+
+	//resp, err := c.DoJsonRequestWithHeaders(http.MethodPost, reqURL, wasmJSON, CompileWASM)
+	resp, err := c.DoFormDataRequestWithHeaders(http.MethodPost, reqURL, wasmJSON, contentTypeApplicationZip, lambdaName, "", false)
+
 	if err != nil {
 		return nil, fmt.Errorf("Error executing Compile WebAssembly request for accountID %s: %s", accountID, err)
 	}
@@ -72,13 +73,10 @@ func (c *Client) CompileWebAssembly(accountID string, requestDTO EwsApiDTO) (*Ew
 func (c *Client) DeployWebAssembly(accountID, lambdaName, filterPath string) (*EwsApiDTO, error) {
 	log.Printf("[INFO] Deploy WebAssembly for accountID: %s\n", accountID)
 
-	values := url.Values{
-		"x-wasm-id":     {lambdaName},
-		"x-filter-path": {filterPath},
-	}
+	reqURL := fmt.Sprintf("%s/%s?accountId=%s", c.config.baseURLEWS, endpointWASMDeploy, accountID)
 
-	reqURL := fmt.Sprintf("%s/%s?accountId=%s", c.config.BaseURLews, endpointWASMDeploy, accountID)
-	resp, err := c.PostFormWithHeaders(reqURL, values, DeployWASM)
+	//resp, err := c.PostFormWithHeaders(reqURL, values, DeployWASM)
+	resp, err := c.DoFormDataRequestWithHeaders(http.MethodPost, reqURL, nil, contentTypeApplicationZip, lambdaName, filterPath, true)
 	if err != nil {
 		return nil, fmt.Errorf("Error executing Deploy WebAssembly request for accountID %s: %s", accountID, err)
 	}
