@@ -6,7 +6,7 @@ NAMESPACE=terraform-providers
 PKG_NAME=ews
 BINARY=terraform-provider-${PKG_NAME}
 # Whenever bumping provider version, please update the version in ews/client.go (line 27) as well.
-VERSION=1.0.2
+VERSION=1.0.7
 
 # Mac Intel Chip
 OS_ARCH=darwin_amd64
