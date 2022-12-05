@@ -9,9 +9,9 @@ BINARY=terraform-provider-${PKG_NAME}
 VERSION=1.0.0
 
 # Mac Intel Chip
-OS_ARCH=darwin_amd64
+#OS_ARCH=darwin_amd64
 # For Mac M1 Chip
-# OS_ARCH=darwin_arm64
+OS_ARCH=darwin_arm64
 # OS_ARCH=linux_amd64
 
 default: install

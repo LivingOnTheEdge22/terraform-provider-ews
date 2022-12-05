@@ -32,7 +32,7 @@ type ApiStatus struct {
 	Source  ApiErrorSource `json:"source"`
 }
 
-// BotsConfigurationDTO - Same DTO for: GET response, POST request, and POST response
+// EwsApiDTO - Same DTO for: GET response, POST request, and POST response
 type EwsApiDTO struct {
 	Status []ApiStatus  `json:"status"`
 	Data   []WASMStruct `json:"data"`
@@ -44,7 +44,7 @@ func (c *Client) CompileWebAssembly(accountID string, requestDTO EwsApiDTO) (*Ew
 	log.Printf("[INFO]  requestDTO: %+v\n", requestDTO)
 
 	wasmJSON, err := json.Marshal(requestDTO)
-	log.Printf("[INFO]  botsJSON: %v\n", string(wasmJSON))
+	log.Printf("[INFO]  wasmJSON: %v\n", string(wasmJSON))
 	reqURL := fmt.Sprintf("%s/%s?accountId=%s", c.config.BaseURL, endpointWASMCompile, accountID)
 	log.Printf("[INFO]  reqURL: %v\n", reqURL)
 	resp, err := c.DoJsonRequestWithHeaders(http.MethodPost, reqURL, wasmJSON, CompileWASM)
