@@ -52,7 +52,7 @@ func (c *Client) UpdateMTLSCertificate(certificateID string, certificate, privat
 
 func (c *Client) GetMTLSCertificate(certificateID, accountID string) (*MTLSCertificate, error) {
 	log.Printf("[INFO] Reading mutual TLS Imperva to Origin Certificate with ID %s", certificateID)
-	//todo refactor !! move to separate method
+
 	reqURL := fmt.Sprintf("%s%s/%s", c.config.BaseURLAPI, endpointMTLSCertificate, certificateID)
 	if accountID != "" {
 		reqURL = fmt.Sprintf("%s%s/%s?caid=%s", c.config.BaseURLAPI, endpointMTLSCertificate, certificateID, accountID)

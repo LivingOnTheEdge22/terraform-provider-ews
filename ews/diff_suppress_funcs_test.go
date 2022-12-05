@@ -4,8 +4,6 @@ import (
 	"testing"
 )
 
-//TODO - CLEAN?????
-
 func TestSuppressEquivalentStringDiffsSameStringsInOrder(t *testing.T) {
 	old := "a,b,c"
 	new := "a,b,c"

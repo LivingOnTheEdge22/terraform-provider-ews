@@ -2,7 +2,6 @@ package ews
 
 const VerifyAccount = "verify_account"
 
-//todo - clean!!
 const CreateSite = "create_site"
 const ReadSite = "read_site"
 const UpdateSite = "update_site"
@@ -29,19 +28,6 @@ const UpdateSitePerformance = "update_site_performance"
 
 const ReadAccountDataStorageRegion = "read_account_data_storage_region"
 const UpdateAccountDataStorageRegion = "update_account_data_storage_region"
-
-const CreateSubAccount = "create_sub_account"
-const ReadSubAccount = "read_sub_account"
-const DeleteSubAccount = "delete_sub_account"
-
-const CreateCustomCertificate = "create_custom_certificate"
-const ReadCustomCertificate = "read_custom_certificate"
-const UpdateCustomCertificate = "update_custom_certificate"
-const DeleteCustomCertificate = "delete_custom_certificate"
-
-const CreateHSMCustomCertificate = "create_hsm_custom_certificate"
-const ReadHSMCustomCertificate = "read_hsm_custom_certificate"
-const DeleteHsmCustomCertificate = "delete_hsm_custom_certificate"
 
 const CreateMtlsImpervaToOriginCertifiate = "create_mtls_imperva_to_origin_certificate"
 const ReadMtlsImpervaToOriginCertifiate = "read_mtls_imperva_to_origin_certificate"

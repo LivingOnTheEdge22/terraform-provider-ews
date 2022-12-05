@@ -51,7 +51,7 @@ func (c *Client) CreateFormDataBody(bodyMap map[string]interface{}) ([]byte, str
 			_, err = io.Copy(fw, strings.NewReader(fmt.Sprintf("%v", value)))
 			break
 		case []byte:
-			fw, err := writer.CreateFormFile(key, filepath.Base(key+".pfx")) //todo KATRIN try to remove .pfx
+			fw, err := writer.CreateFormFile(key, filepath.Base(key+".pfx"))
 			if err != nil {
 				log.Printf("failed to create %s formdata field", key)
 			}
