@@ -1,0 +1,10 @@
+.DS_Store
+examples/terraform.tfplan
+examples/terraform.tfstate
+examples/.terraform/
+examples/*.tfstate*
+examples/ignore
+ews/c.out
+terraform-provider-ews
+.idea/
+.tmp/
