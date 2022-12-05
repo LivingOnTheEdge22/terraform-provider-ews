@@ -38,7 +38,7 @@ type EwsApiDTO struct {
 	Data   WASMStruct  `json:"data"`
 }
 
-func (c *Client) CompileWebAssembly(accountID string, requestDTO EwsApiDTO) (*EwsApiDTO, error) {
+func (c *Client) CompileWebAssembly(accountID string, requestDTO EwsApiDTO) error {
 	log.Printf("[INFO] Compile WebAssembly for accountID: %s\n", accountID)
 
 	log.Printf("[INFO]  requestDTO: %+v\n", requestDTO)
@@ -59,17 +59,20 @@ func (c *Client) CompileWebAssembly(accountID string, requestDTO EwsApiDTO) (*Ew
 	// Dump JSON
 	log.Printf("[DEBUG] EWS Compile WebAssembly JSON response: %s\n", string(responseBody))
 
-	// Parse the JSON
-	var responseDTO EwsApiDTO
-	err = json.Unmarshal([]byte(responseBody), &responseDTO)
-	if err != nil {
-		return nil, fmt.Errorf("Error parsing Compile WebAssembly JSON response for accountID %s: %s\nresponse: %s", accountID, err, string(responseBody))
+	if string(responseBody) != "success" {
+		return fmt.Errorf("failed to compile lambda")
 	}
+	//// Parse the JSON
+	//var responseDTO EwsApiDTO
+	//err = json.Unmarshal([]byte(responseBody), &responseDTO)
+	//if err != nil {
+	//	return nil, fmt.Errorf("Error parsing Compile WebAssembly JSON response for accountID %s: %s\nresponse: %s", accountID, err, string(responseBody))
+	//}
 
-	return &responseDTO, nil
+	return nil
 }
 
-func (c *Client) DeployWebAssembly(accountID, lambdaName, filterPath string) (*EwsApiDTO, error) {
+func (c *Client) DeployWebAssembly(accountID, lambdaName, filterPath string) error {
 	log.Printf("[INFO] Deploy WebAssembly for accountID: %s\n", accountID)
 
 	values := url.Values{
@@ -80,7 +83,7 @@ func (c *Client) DeployWebAssembly(accountID, lambdaName, filterPath string) (*E
 	reqURL := fmt.Sprintf("%s/%s?accountId=%s", c.config.BaseURLews, endpointWASMDeploy, accountID)
 	resp, err := c.PostFormWithHeaders(reqURL, values, DeployWASM)
 	if err != nil {
-		return nil, fmt.Errorf("Error executing Deploy WebAssembly request for accountID %s: %s", accountID, err)
+		return fmt.Errorf("Error executing Deploy WebAssembly request for accountID %s: %s", accountID, err)
 	}
 
 	// Read the body
@@ -89,13 +92,16 @@ func (c *Client) DeployWebAssembly(accountID, lambdaName, filterPath string) (*E
 
 	// Dump JSON
 	log.Printf("[DEBUG] EWS Deploy WebAssembly JSON response: %s\n", string(responseBody))
-
-	// Parse the JSON
-	var responseDTO EwsApiDTO
-	err = json.Unmarshal([]byte(responseBody), &responseDTO)
-	if err != nil {
-		return nil, fmt.Errorf("Error parsing Deploy WebAssembly JSON response for accountID %s: %s\nresponse: %s", accountID, err, string(responseBody))
+	if string(responseBody) != "success" {
+		return fmt.Errorf("failed to deploy lambda")
 	}
 
-	return &responseDTO, nil
+	//// Parse the JSON
+	//var responseDTO EwsApiDTO
+	//err = json.Unmarshal([]byte(responseBody), &responseDTO)
+	//if err != nil {
+	//	return fmt.Errorf("Error parsing Deploy WebAssembly JSON response for accountID %s: %s\nresponse: %s", accountID, err, string(responseBody))
+	//}
+
+	return nil
 }
