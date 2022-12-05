@@ -17,17 +17,6 @@ type Config struct {
 	// Base URL (no trailing slash)
 	// This endpoint is unlikely to change in the near future
 	BaseURL string
-
-	// Base URL Revision 2 (no trailing slash)
-	// Updates to APIv1 are underway and newer resources are supported
-	// Rev2 includes the move to Swagger, appropriate method verbs (not everything is a post)
-	// The other endpoints will eventually move over but we'll need the following for now
-	BaseURLRev2 string
-
-	// Base URL API
-	// API V2
-	// Same as revision 2 but with a different subdomain
-	BaseURLAPI string
 }
 
 var missingAPIIDMessage = "API Identifier (api_id) must be provided"
@@ -53,16 +42,6 @@ func (c *Config) Client() (interface{}, error) {
 	// Check Base URL
 	if strings.TrimSpace(c.BaseURL) == "" {
 		return nil, errors.New(missingBaseURLMessage)
-	}
-
-	// Check Base URL Revision 2
-	if strings.TrimSpace(c.BaseURLRev2) == "" {
-		return nil, errors.New(missingBaseURLRev2Message)
-	}
-
-	// Check Base URL API
-	if strings.TrimSpace(c.BaseURLAPI) == "" {
-		return nil, errors.New(missingBaseURLAPIMessage)
 	}
 
 	// Create client

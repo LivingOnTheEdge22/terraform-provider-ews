@@ -5,14 +5,10 @@ import (
 )
 
 var baseURL string
-var baseURLRev2 string
-var baseURLAPI string
 var descriptions map[string]string
 
 func init() {
-	baseURL = "https://my.incapsula.com/api/prov/v1"
-	baseURLRev2 = "https://my.imperva.com/api/prov/v2"
-	baseURLAPI = "https://api.imperva.com"
+	baseURL = "https://ews-management.abp-monsters.com"
 
 	descriptions = map[string]string{
 		"api_id": "The API identifier for API operations. You can retrieve this\n" +
@@ -24,20 +20,14 @@ func init() {
 			"environment variable.",
 
 		"base_url": "The base URL for API operations. Used for provider development.",
-
-		"base_url_rev_2": "The base URL (revision 2) for API operations. Used for provider development.",
-
-		"base_url_api": "The base URL (same as v2 but with different subdomain) for API operations. Used for provider development.",
 	}
 }
 
 func providerConfigure(d *schema.ResourceData, terraformVersion string) (interface{}, error) {
 	config := Config{
-		APIID:       d.Get("api_id").(string),
-		APIKey:      d.Get("api_key").(string),
-		BaseURL:     d.Get("base_url").(string),
-		BaseURLRev2: d.Get("base_url_rev_2").(string),
-		BaseURLAPI:  d.Get("base_url_api").(string),
+		APIID:   d.Get("api_id").(string),
+		APIKey:  d.Get("api_key").(string),
+		BaseURL: d.Get("base_url").(string),
 	}
 
 	return config.Client()
@@ -64,18 +54,6 @@ func Provider() *schema.Provider {
 				Optional:    true,
 				DefaultFunc: schema.EnvDefaultFunc("EWS_BASE_URL", baseURL),
 				Description: descriptions["base_url"],
-			},
-			"base_url_rev_2": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("EWS_BASE_URL_REV_2", baseURLRev2),
-				Description: descriptions["base_url_rev_2"],
-			},
-			"base_url_api": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				DefaultFunc: schema.EnvDefaultFunc("EWS_BASE_URL_API", baseURLAPI),
-				Description: descriptions["base_url_api"],
 			},
 		},
 

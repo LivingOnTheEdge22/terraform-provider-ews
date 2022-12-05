@@ -33,3 +33,6 @@ const CreateMtlsImpervaToOriginCertifiate = "create_mtls_imperva_to_origin_certi
 const ReadMtlsImpervaToOriginCertifiate = "read_mtls_imperva_to_origin_certificate"
 const UpdateMtlsImpervaToOriginCertifiate = "update_mtls_imperva_to_origin_certificate"
 const DeleteMtlsImpervaToOriginCertifiate = "delete_mtls_imperva_to_origin_certificate"
+
+const CompileWASM = "compile_wasm"
+const DeployWASM = "deploy_wasm"

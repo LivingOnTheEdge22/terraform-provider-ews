@@ -1,4 +1,4 @@
-Terraform `Incapsula` Provider
+Terraform `EWS` Provider
 =========================
 
 - Website: https://www.terraform.io
@@ -7,10 +7,6 @@ Terraform `Incapsula` Provider
 
 <img src="https://cdn.rawgit.com/hashicorp/terraform-website/master/content/source/assets/images/logo-hashicorp.svg" width="600px">
 
-Maintainers
------------
-
-This provider plugin is maintained by the team at [Imperva](https://www.imperva.com/).
 
 Requirements
 ------------
@@ -21,22 +17,22 @@ Requirements
 Building The Provider
 ---------------------
 
-Clone repository to: `$GOPATH/src/github.com/terraform-providers/terraform-provider-incapsula`
+Clone repository to: `$GOPATH/src/github.com/terraform-providers/terraform-provider-ews`
 
 ```sh
-$ git clone git@github.com:imperva/terraform-provider-incapsula $GOPATH/src/github.com/terraform-providers/terraform-provider-incapsula
+$ git clone git@github.com:LivingOnTheEdge22/terraform-provider-ews $GOPATH/src/github.com/terraform-providers/terraform-provider-ews
 ```
 
 Enter the provider directory and build the provider
 
 ```sh
-$ cd $GOPATH/src/github.com/imperva/terraform-provider-incapsula
+$ cd $GOPATH/src/github.com/terraform-providers/terraform-provider-ews
 $ make build
 ```
 
 Using the provider
 ----------------------
-If you're building the provider, follow the instructions to [install it as a plugin.](https://www.terraform.io/docs/plugins/basics.html#installing-a-plugin) After placing it into your plugins directory,  run `terraform init` to initialize it. Documentation about the provider specific configuration options can be found on the [provider's website](https://www.terraform.io/docs/providers/incapsula/index.html).
+If you're building the provider, follow the instructions to [install it as a plugin.](https://www.terraform.io/docs/plugins/basics.html#installing-a-plugin) After placing it into your plugins directory,  run `terraform init` to initialize it. Documentation about the provider specific configuration options can be found on the [provider's website](https://www.terraform.io/docs/providers/ews/index.html).
 
 Developing the Provider
 ---------------------------
@@ -48,7 +44,7 @@ To compile the provider, run `make build`. This will build the provider and put 
 ```sh
 $ make bin
 ...
-$ $GOPATH/bin/terraform-provider-incapsula
+$ $GOPATH/bin/terraform-provider-ews
 ...
 ```
 
@@ -74,7 +70,7 @@ Brew is a pre-requisite for this script, as the main package manager to install
 the dependent libraries such as Golang, Terraform and Git.
 More details about this script is provided as inner code comments and description.
 
-Script location **/scripts/tf-provider-incap-orch.sh**.
+Script location **/scripts/tf-provider-ews-orch.sh**.
 
 Script installation command will clone this repository to /workspace folder
 as a first step and pull from git in subsequent runs.
@@ -83,6 +79,6 @@ It's recommended to download the script to some directory in local machine and s
 with installation command execution
 
 ```sh
-./tf-provider-incap-orch.sh -i "youApiID" "youApiKey"
+./tf-provider-ews-orch.sh -i "youApiID" "youApiKey"
 ```
 

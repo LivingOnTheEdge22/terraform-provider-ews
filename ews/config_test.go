@@ -52,7 +52,7 @@ func TestMissingBaseURL(t *testing.T) {
 }
 
 func TestMissingBaseURLRev2(t *testing.T) {
-	config := Config{APIID: "foo", APIKey: "bar", BaseURL: "foobar.com", BaseURLRev2: ""}
+	config := Config{APIID: "foo", APIKey: "bar", BaseURL: "foobar.com"}
 	client, err := config.Client()
 	if err == nil {
 		t.Errorf("Should have received an error, got a client: %q", client)
@@ -63,7 +63,7 @@ func TestMissingBaseURLRev2(t *testing.T) {
 }
 
 func TestMissingBaseURLAPI(t *testing.T) {
-	config := Config{APIID: "foo", APIKey: "bar", BaseURL: "foobar.com", BaseURLRev2: "foobar.com", BaseURLAPI: ""}
+	config := Config{APIID: "foo", APIKey: "bar", BaseURL: "foobar.com"}
 	client, err := config.Client()
 	if err == nil {
 		t.Errorf("Should have received an error, got a client: %q", client)
@@ -82,7 +82,7 @@ func TestInvalidCredentials(t *testing.T) {
 	}))
 	defer server.Close()
 
-	config := Config{APIID: "bad", APIKey: "bad", BaseURL: server.URL, BaseURLRev2: server.URL, BaseURLAPI: server.URL}
+	config := Config{APIID: "bad", APIKey: "bad", BaseURL: server.URL}
 	client, err := config.Client()
 	if err == nil {
 		t.Errorf("Should have received an error, got a client: %q", client)
@@ -101,7 +101,7 @@ func TestValidCredentials(t *testing.T) {
 	}))
 	defer server.Close()
 
-	config := Config{APIID: "good", APIKey: "good", BaseURL: server.URL, BaseURLRev2: server.URL, BaseURLAPI: server.URL}
+	config := Config{APIID: "good", APIKey: "good", BaseURL: server.URL}
 	client, err := config.Client()
 	if err != nil {
 		t.Errorf("Should not have received an error, got: %s", err)
