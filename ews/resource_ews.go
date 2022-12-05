@@ -58,7 +58,7 @@ func resourceEwsCreate(d *schema.ResourceData, m interface{}) error {
 		Data: wasm,
 	}
 
-	_, err := client.CompileWebAssembly(
+	err := client.CompileWebAssembly(
 		d.Get("account_id").(string),
 		d.Get("lambda_name").(string),
 		ewsApiDTO,
@@ -74,7 +74,7 @@ func resourceEwsCreate(d *schema.ResourceData, m interface{}) error {
 	deployed := d.Get("deployed").(bool)
 	if d.HasChange("deployed") && d.Get("deployed") != "" {
 		if deployed == true {
-			_, err = client.DeployWebAssembly(
+			err = client.DeployWebAssembly(
 				d.Get("account_id").(string),
 				d.Get("lambda_name").(string),
 				d.Get("filter_path").(string),
