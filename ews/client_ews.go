@@ -34,8 +34,8 @@ type ApiStatus struct {
 
 // EwsApiDTO - Same DTO for: GET response, POST request, and POST response
 type EwsApiDTO struct {
-	Status []ApiStatus  `json:"status"`
-	Data   []WASMStruct `json:"data"`
+	Status []ApiStatus `json:"status"`
+	Data   WASMStruct  `json:"data"`
 }
 
 func (c *Client) CompileWebAssembly(accountID string, requestDTO EwsApiDTO) (*EwsApiDTO, error) {
@@ -69,14 +69,15 @@ func (c *Client) CompileWebAssembly(accountID string, requestDTO EwsApiDTO) (*Ew
 	return &responseDTO, nil
 }
 
-func (c *Client) DeployWebAssembly(accountID string) (*EwsApiDTO, error) {
+func (c *Client) DeployWebAssembly(accountID, lambdaName, filterPath string) (*EwsApiDTO, error) {
 	log.Printf("[INFO] Deploy WebAssembly for accountID: %s\n", accountID)
 
 	values := url.Values{
-		"accountId": {accountID},
+		"x-wasm-id":     {lambdaName},
+		"x-filter-path": {filterPath},
 	}
 
-	reqURL := fmt.Sprintf("%s/%s", c.config.BaseURLews, endpointWASMDeploy)
+	reqURL := fmt.Sprintf("%s/%s?accountId=%s", c.config.BaseURLews, endpointWASMDeploy, accountID)
 	resp, err := c.PostFormWithHeaders(reqURL, values, DeployWASM)
 	if err != nil {
 		return nil, fmt.Errorf("Error executing Deploy WebAssembly request for accountID %s: %s", accountID, err)

@@ -73,8 +73,9 @@ func Provider() *schema.Provider {
 
 		ResourcesMap: map[string]*schema.Resource{
 
-			"incapsula_site":    resourceSite(),
-			"incapsula_account": resourceAccount(),
+			"ews_site":    resourceSite(),
+			"ews_account": resourceAccount(),
+			"resourceEws": resourceEws(),
 		},
 	}
 
