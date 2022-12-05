@@ -16,7 +16,7 @@ type Config struct {
 
 	// Base URL EWS (no trailing slash)
 	// This endpoint is unlikely to change in the near future
-	BaseURLews string
+	baseURLEWS string
 
 	// Base URL (no trailing slash)
 	// This endpoint is unlikely to change in the near future
@@ -36,9 +36,7 @@ type Config struct {
 
 var missingAPIIDMessage = "API Identifier (api_id) must be provided"
 var missingAPIKeyMessage = "API Key (api_key) must be provided"
-var missingBaseURLMessage = "Base URL must be provided"
-var missingBaseURLRev2Message = "Base URL Revision 2 must be provided"
-var missingBaseURLAPIMessage = "Base URL API must be provided"
+var missingBaseURLMessage = "Base URL EWS must be provided"
 
 // Client configures and returns a fully initialized Incapsula Client
 func (c *Config) Client() (interface{}, error) {
@@ -55,19 +53,12 @@ func (c *Config) Client() (interface{}, error) {
 	}
 
 	// Check Base URL
-	if strings.TrimSpace(c.BaseURL) == "" {
+	if strings.TrimSpace(c.baseURLEWS) == "" {
 		return nil, errors.New(missingBaseURLMessage)
 	}
 
 	// Create client
 	client := NewClient(c)
-
-	// Verify client credentials
-	accountStatusResponse, err := client.Verify()
-	client.accountStatus = accountStatusResponse
-	if err != nil {
-		return nil, err
-	}
 
 	return client, nil
 }

@@ -2,11 +2,9 @@ package ews
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"io"
-	"io/ioutil"
 	"log"
 	"mime/multipart"
 	"net/http"
@@ -19,6 +17,7 @@ import (
 
 const contentTypeApplicationUrlEncoded = "application/x-www-form-urlencoded"
 const contentTypeApplicationJson = "application/json"
+const contentTypeApplicationZip = "application/zip"
 
 const durationOfRetriesInSeconds = 30
 
@@ -27,7 +26,6 @@ type Client struct {
 	config          *Config
 	httpClient      *http.Client
 	providerVersion string
-	accountStatus   *AccountStatusResponse
 }
 
 // NewClient creates a new client with the provided configuration
@@ -66,48 +64,6 @@ func (c *Client) CreateFormDataBody(bodyMap map[string]interface{}) ([]byte, str
 	return body.Bytes(), writer.FormDataContentType()
 }
 
-// Verify checks the API credentials
-func (c *Client) Verify() (*AccountStatusResponse, error) {
-	log.Println("[INFO] Checking API credentials against Incapsula API")
-
-	reqURL := fmt.Sprintf("%s/%s", c.config.BaseURL, endpointAccountStatus)
-	data := url.Values{}
-
-	resp, err := c.PostFormWithHeaders(reqURL, data, VerifyAccount)
-	if err != nil {
-		return nil, fmt.Errorf("Error checking account: %s", err)
-	}
-
-	// Read the body
-	defer resp.Body.Close()
-	responseBody, err := ioutil.ReadAll(resp.Body)
-
-	// Dump JSON
-	log.Printf("[DEBUG] Incapsula account JSON response: %s\n", string(responseBody))
-
-	// Parse the JSON
-	var accountStatusResponse AccountStatusResponse
-	err = json.Unmarshal([]byte(responseBody), &accountStatusResponse)
-	if err != nil {
-		return nil, fmt.Errorf("Error parsing account JSON response: %s", err)
-	}
-
-	var resString string
-
-	if resNumber, ok := accountStatusResponse.Res.(float64); ok {
-		resString = fmt.Sprintf("%d", int(resNumber))
-	} else {
-		resString = accountStatusResponse.Res.(string)
-	}
-
-	// Look at the response status code from Incapsula
-	if resString != "0" {
-		return &accountStatusResponse, fmt.Errorf("Error from Incapsula service when checking account: %s", string(responseBody))
-	}
-
-	return &accountStatusResponse, nil
-}
-
 func (c *Client) PostFormWithHeaders(url string, data url.Values, operation string) (*http.Response, error) {
 	req, err := http.NewRequest(http.MethodPost, url, strings.NewReader(data.Encode()))
 	if err != nil {
@@ -124,7 +80,8 @@ func (c *Client) DoJsonRequestWithCustomHeaders(method string, url string, data 
 		return nil, fmt.Errorf("Error preparing request: %s", err)
 	}
 
-	SetHeaders(c, req, contentTypeApplicationJson, operation, headers)
+	//SetHeaders(c, req, contentTypeApplicationJson, operation, headers)
+	SetHeaders(c, req, contentTypeApplicationZip, operation, headers)
 
 	return c.executeRequest(req)
 }
@@ -160,13 +117,14 @@ func GetRequestParamsWithCaid(accountId int) map[string]string {
 	return params
 }
 
-func (c *Client) DoFormDataRequestWithHeaders(method string, url string, data []byte, contentType string, operation string) (*http.Response, error) {
+func (c *Client) DoFormDataRequestWithHeaders(method string, url string, data []byte, contentType string, wasmId, filterPath string, deploy bool) (*http.Response, error) {
 	req, err := PrepareJsonRequest(method, url, data)
 	if err != nil {
 		return nil, fmt.Errorf("Error preparing request: %s", err)
 	}
 
-	SetHeaders(c, req, contentType, operation, nil)
+	//SetHeaders(c, req, contentType, operation, nil)
+	SetHeadersNew(c, req, contentType, wasmId, filterPath, deploy)
 	return c.executeRequest(req)
 }
 
@@ -176,6 +134,19 @@ func PrepareJsonRequest(method string, url string, data []byte) (*http.Request, 
 	}
 
 	return http.NewRequest(method, url, bytes.NewReader(data))
+}
+
+func SetHeadersNew(c *Client, req *http.Request, contentType, wasmId, filterPath string, deploy bool) {
+	req.Header.Set("x-wasm-id", wasmId)
+	if deploy {
+		// Deploy case, we need filter-path
+		req.Header.Set("x-filter-path", filterPath)
+	} else {
+		// Compile case, we need Content-Type (ZIP)
+		req.Header.Set("Content-Type", contentType)
+	}
+	req.Header.Set("x-api-id", c.config.APIID)
+	req.Header.Set("x-api-key", c.config.APIKey)
 }
 
 func SetHeaders(c *Client, req *http.Request, contentType string, operation string, customHeaders map[string]string) {
