@@ -4,7 +4,7 @@
 # STAKEHOLDERS: Imperva TF Provider developers
 # DESCRIPTION: Following script is an automation on top of provider make commands 
 # and it aims to automate and wrap up manual iterative configurations
-# Run ./tf-provider-incap-orch.sh to see the menu options and script usage, in brief
+# Run ./tf-provider-ews-orch.sh to see the menu options and script usage, in brief
 # script currently supports the following capabilities:
 
 #Install
@@ -32,9 +32,9 @@
 USER=`whoami`
 ROOT=/Users/$USER
 GOPATH=$ROOT/workspace/go
-PROVIDER_GIT=https://github.com/imperva/terraform-provider-incapsula.git
-PROVIDER_GIT_LOCAL=$GOPATH/src/github.com/terraform-providers/terraform-provider-incapsula
-TERRAFORM=$ROOT/workspace/terraform
+PROVIDER_GIT=https://github.com/livingontheedge22/terraform-provider-ews.git
+PROVIDER_GIT_LOCAL=$GOPATH/src/github.com/terraform-providers/terraform-provider-ews
+TERRAFORM=$ROOT/workspace/terraform/ews
 MAIN_TF=$TERRAFORM/main.tf
 VARS_TF=$TERRAFORM/terraform.tfvars
 I_FLAG="false"
@@ -43,19 +43,19 @@ T_FLAG="false"
 A_FLAG="false"
 C_FLAG="false"
 
-export INCAPSULA_API_ID=$2
-export INCAPSULA_API_KEY=$3
-export GO111MODULE="on" 
+export EWS_API_ID=$2
+export EWS_API_KEY=$3
+export GO111MODULE="on"
 
 print_usage() {
   printf "\n****************************\n
-Usage: ./tf-provider-incap-orch.sh <option-character> <optional-API-ID> <optional-API-Key> \n
+Usage: ./tf-provider-ews-orch.sh <option-character> <optional-API-ID> <optional-API-Key> \n
 Options:\n
- -i Install, usage example: ./tf-provider-incap-orch.sh -i \"12345\" \"a1fsa2f-fas24fsaf\" \n
- -b Build, usage example: ./tf-provider-incap-orch.sh -b \n 
- -t Unit Tests, usage example: /tf-provider-incap-orch.sh -t \"12345\" \"a1fsa2f-fas24fsaf\"  \n 
- -a Acceptance Tests, usage example: /tf-provider-incap-orch.sh -a \"12345\" \"a1fsa2f-fas24fsaf\"  \n 
- -c Clean, usage example: ./tf-provider-incap-orch.sh -c \n\n****************************\n"
+ -i Install, usage example: ./tf-provider-ews-orch.sh -i \"12345\" \"a1fsa2f-fas24fsaf\" \n
+ -b Build, usage example: ./tf-provider-ews-orch.sh -b \n
+ -t Unit Tests, usage example: /tf-provider-ews-orch.sh -t \"12345\" \"a1fsa2f-fas24fsaf\"  \n
+ -a Acceptance Tests, usage example: /tf-provider-ews-orch.sh -a \"12345\" \"a1fsa2f-fas24fsaf\"  \n
+ -c Clean, usage example: ./tf-provider-ews-orch.sh -c \n\n****************************\n"
 }
 
 validation(){
@@ -103,11 +103,11 @@ install(){
 
     if [ -d "$PROVIDER_GIT_LOCAL" ]; 
     then 
-        log_info "${FUNCNAME[0]}" "Pulling repo terraform-provider-incapsula"
+        log_info "${FUNCNAME[0]}" "Pulling repo terraform-provider-ews"
         git --git-dir=$PROVIDER_GIT_LOCAL/.git config core.fileMode false
         git --git-dir=$PROVIDER_GIT_LOCAL/.git pull
     else 
-        log_info "${FUNCNAME[0]}" "Cloning repo terraform-provider-incapsula"
+        log_info "${FUNCNAME[0]}" "Cloning repo terraform-provider-ews"
         git clone $PROVIDER_GIT $PROVIDER_GIT_LOCAL
     fi
 
@@ -116,7 +116,7 @@ install(){
     echo "provider_installation {
   filesystem_mirror {
     path    = \"/Users/$USER/.terraform.d/plugins\"
-    include = [\"registry.terraform.io/terraform-providers/incapsula\"]
+    include = [\"registry.terraform.io/terraform-providers/ews\"]
   }
 }" > ~/.terraformrc
 
@@ -131,26 +131,26 @@ install(){
         log_info "${FUNCNAME[0]}" "Created file $MAIN_TF"
         echo "terraform {
   required_providers {
-    incapsula = {
-      source = \"terraform-providers/incapsula\"
+    ews = {
+      source = \"terraform-providers/ews\"
       version = \"$PROVIDER_VERSION\"
     }
   }
 }
  
-variable \"incapsula_api_id\" {
+variable \"ews_api_id\" {
   type        = number
   description = \"API ID\"
 }
  
-variable \"incapsula_api_key\" {
+variable \"ews_api_key\" {
   type        = string
   description = \"API KEY\"
 }
 
-provider \"incapsula\" {
-  api_id = var.incapsula_api_id
-  api_key = var.incapsula_api_key
+provider \"ews\" {
+  api_id = var.ews_api_id
+  api_key = var.ews_api_key
 }" > $MAIN_TF
 
         chmod 777 $MAIN_TF
@@ -159,8 +159,8 @@ provider \"incapsula\" {
     if [ ! -f "$VARS_TF" ]; 
     then 
         log_info "${FUNCNAME[0]}" "Created file $VARS_TF"
-        echo "incapsula_api_key = \"$INCAPSULA_API_KEY\"
-incapsula_api_id = $INCAPSULA_API_ID" > $VARS_TF 
+        echo "ews_api_key = \"$EWS_API_KEY\"
+ews_api_id = $EWS_API_ID" > $VARS_TF
         chmod 777 $VARS_TF
     fi;
 }
@@ -177,7 +177,7 @@ build(){
 
 unit(){
     log_entry ${FUNCNAME[0]}
-    cd $PROVIDER_GIT_LOCAL/incapsula && go test
+    cd $PROVIDER_GIT_LOCAL/ews && go test
 }
 
 acceptance(){

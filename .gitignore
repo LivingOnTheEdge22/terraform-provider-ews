@@ -4,7 +4,7 @@ examples/terraform.tfstate
 examples/.terraform/
 examples/*.tfstate*
 examples/ignore
-incapsula/c.out
+ews/c.out
 terraform-provider-incapsula
 .idea/
 .tmp/

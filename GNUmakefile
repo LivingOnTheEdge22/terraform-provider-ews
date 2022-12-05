@@ -3,10 +3,10 @@ GOFMT_FILES?=$$(find . -name '*.go' |grep -v vendor)
 WEBSITE_REPO=github.com/hashicorp/terraform-website
 HOSTNAME=registry.terraform.io
 NAMESPACE=terraform-providers
-PKG_NAME=incapsula
+PKG_NAME=ews
 BINARY=terraform-provider-${PKG_NAME}
-# Whenever bumping provider version, please update the version in incapsula/client.go (line 27) as well.
-VERSION=3.10.3
+# Whenever bumping provider version, please update the version in ews/client.go (line 27) as well.
+VERSION=1.0.0
 
 # Mac Intel Chip
 OS_ARCH=darwin_amd64
