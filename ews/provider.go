@@ -75,7 +75,7 @@ func Provider() *schema.Provider {
 
 			"ews_site":    resourceSite(),
 			"ews_account": resourceAccount(),
-			"resourceEws": resourceEws(),
+			"ews_lambda":  resourceEws(),
 		},
 	}
 
