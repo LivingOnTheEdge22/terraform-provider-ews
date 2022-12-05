@@ -5,10 +5,20 @@ import (
 )
 
 var baseURL string
+var baseURLRev2 string
+var baseURLAPI string
+
+var baseURLews string
+
 var descriptions map[string]string
 
 func init() {
-	baseURL = "https://ews-management.abp-monsters.com"
+
+	baseURL = "https://my.incapsula.com/api/prov/v1"
+	baseURLRev2 = "https://my.imperva.com/api/prov/v2"
+	baseURLAPI = "https://api.imperva.com"
+
+	baseURLews = "https://ews-management.abp-monsters.com"
 
 	descriptions = map[string]string{
 		"api_id": "The API identifier for API operations. You can retrieve this\n" +
@@ -65,7 +75,6 @@ func Provider() *schema.Provider {
 
 			"incapsula_site":    resourceSite(),
 			"incapsula_account": resourceAccount(),
-			"incapsula_mtls_imperva_to_origin_certificate": resourceMtlsImpervaToOriginCertificate(),
 		},
 	}
 

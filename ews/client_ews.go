@@ -45,7 +45,7 @@ func (c *Client) CompileWebAssembly(accountID string, requestDTO EwsApiDTO) (*Ew
 
 	wasmJSON, err := json.Marshal(requestDTO)
 	log.Printf("[INFO]  wasmJSON: %v\n", string(wasmJSON))
-	reqURL := fmt.Sprintf("%s/%s?accountId=%s", c.config.BaseURL, endpointWASMCompile, accountID)
+	reqURL := fmt.Sprintf("%s/%s?accountId=%s", c.config.BaseURLews, endpointWASMCompile, accountID)
 	log.Printf("[INFO]  reqURL: %v\n", reqURL)
 	resp, err := c.DoJsonRequestWithHeaders(http.MethodPost, reqURL, wasmJSON, CompileWASM)
 	if err != nil {
@@ -76,7 +76,7 @@ func (c *Client) DeployWebAssembly(accountID string) (*EwsApiDTO, error) {
 		"accountId": {accountID},
 	}
 
-	reqURL := fmt.Sprintf("%s/%s", c.config.BaseURL, endpointWASMDeploy)
+	reqURL := fmt.Sprintf("%s/%s", c.config.BaseURLews, endpointWASMDeploy)
 	resp, err := c.PostFormWithHeaders(reqURL, values, DeployWASM)
 	if err != nil {
 		return nil, fmt.Errorf("Error executing Deploy WebAssembly request for accountID %s: %s", accountID, err)
