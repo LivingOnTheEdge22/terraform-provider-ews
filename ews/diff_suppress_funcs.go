@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
+//TODO - CLEAN?????
 func suppressEquivalentStringDiffs(k, old, new string, d *schema.ResourceData) bool {
 	oldSlice := strings.Split(old, ",")
 	newSlice := strings.Split(new, ",")

@@ -71,7 +71,7 @@ func resourceMtlsImpervaToOriginCertificate() *schema.Resource {
 				Type:        schema.TypeString,
 				Optional:    true,
 				DiffSuppressFunc: func(k, old, new string, d *schema.ResourceData) bool {
-					newHash := createHash(d)
+					newHash := ""
 					if newHash == old {
 						return true
 					}
@@ -84,7 +84,6 @@ func resourceMtlsImpervaToOriginCertificate() *schema.Resource {
 
 func resourceMTLSImpervaToOriginCertificateCreate(d *schema.ResourceData, m interface{}) error {
 	client := m.(*Client)
-	inputHash := createHash(d)
 	accountID := d.Get("account_id").(string)
 	encodedCert := d.Get("certificate").(string)
 	encodedPKey := d.Get("private_key").(string)
@@ -112,7 +111,7 @@ func resourceMTLSImpervaToOriginCertificateCreate(d *schema.ResourceData, m inte
 			decodedPKey,
 			passphrase,
 			d.Get("certificate_name").(string),
-			inputHash,
+			"",
 			accountID,
 		)
 
@@ -145,7 +144,7 @@ func resourceMTLSImpervaToOriginCertificateRead(d *schema.ResourceData, m interf
 
 func resourceMTLSImpervaToOriginCertificateUpdate(d *schema.ResourceData, m interface{}) error {
 	client := m.(*Client)
-	inputHash := createHash(d)
+	inputHash := ""
 	accountID := d.Get("account_id").(string)
 	encodedCert := d.Get("certificate").(string)
 	encodedPKey := d.Get("private_key").(string)
