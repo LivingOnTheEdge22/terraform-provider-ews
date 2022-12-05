@@ -1,4 +1,4 @@
-module github.com/terraform-providers/terraform-provider-incapsula
+module github.com/terraform-providers/terraform-provider-ews
 
 go 1.16
 
