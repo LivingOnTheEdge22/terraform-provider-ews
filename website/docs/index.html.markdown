@@ -8,9 +8,7 @@ description: |-
 
 # Incapsula Provider
 
-The Incapsula provider is used to interact with resources supported by Imperva. The provider needs to be configured with the proper credentials before it can be used.
-
-The current API that the Incapsula provider is calling requires sequential execution. You can either use `depends_on` or specify the `parallelism` flag. Imperva recommends the latter and setting the value to `1`. Example call: `terraform apply -parallelism=1`.
+The EWS provider is used to interact with resources supported by Imperva Edge services. The provider needs to be configured with the proper credentials before it can be used.
 
 Use the navigation to the left to read about the available resources.
 
@@ -18,22 +16,26 @@ Use the navigation to the left to read about the available resources.
 
 ```hcl
 # Configure the Incapsula provider
-provider "incapsula" {
-  api_id = "${var.incapsula_api_id}"
-  api_key = "${var.incapsula_api_key}"
+provider "ews" {
+  api_id = var.ews_api_id
+  api_key = var.ews_api_key
+  base_url_ews = "https://ews-management.abp-monsters.com"
 }
 
-# Create a site
-resource "incapsula_site" "example-site" {
-  domain = "examplesite.com"
+# Upload Lambda
+resource "ews_lambda_compile" "director_lambda_compile" {
+  account_id       = -1
+  lambda_name      = "leaked-redirector"
+  lambda_path      = "./leaked-director.zip"
 }
 
-# Create a ACL security rule
-resource "incapsula_acl_security_rule" "example-global-blacklist-ip-rule" {
-  rule_id = "api.acl.blacklisted_ips"
-  site_id = "${incapsula_site.example-site.id}"
-  ips = "192.168.1.1,192.168.1.2"
+# Deploy Lambda
+resource "ews_lambda_deploy" "director_lambda_deploy" {
+  account_id       = -1
+  lambda_name      = ews_lambda_compile.director_lambda.lambda_name
+  filter_path      = "/login"
 }
+
 ```
 
 ## Argument Reference
