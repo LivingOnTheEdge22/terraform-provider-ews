@@ -39,6 +39,7 @@ func (c *Client) CompileWebAssembly(accountID, lambdaName, lambdaPath string) er
 	reqURL := fmt.Sprintf("%s/%s?accountId=%s", c.config.baseURLEWS, endpointWASMCompile, accountID)
 	log.Printf("[INFO]  reqURL: %v\n", reqURL)
 
+	//todo - Raphy - update logic here
 	resp, err := c.DoFormDataRequestWithHeaders(http.MethodPost, reqURL, wasmJSON, contentTypeApplicationZip, lambdaName, "", false)
 
 	if err != nil {
