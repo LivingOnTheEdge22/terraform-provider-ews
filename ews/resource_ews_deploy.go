@@ -19,7 +19,6 @@ func resourceEwsDeploy() *schema.Resource {
 				Description: "account id",
 				Type:        schema.TypeString,
 				Required:    true,
-				ForceNew:    true,
 			},
 			"site_id": {
 				Description: "Site id",
