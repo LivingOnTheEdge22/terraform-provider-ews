@@ -2,7 +2,7 @@ terraform {
   required_providers {
     ews = {
       source = "terraform-providers/ews"
-      version = "1.0.7"
+      version = "1.1.0"
     }
   }
 }
