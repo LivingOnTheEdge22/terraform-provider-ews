@@ -62,7 +62,8 @@ func Provider() *schema.Provider {
 		DataSourcesMap: map[string]*schema.Resource{},
 
 		ResourcesMap: map[string]*schema.Resource{
-			"ews_lambda": resourceEws(),
+			"ews_lambda_compile": resourceEwsCompile(),
+			"ews_lambda_deploy":  resourceEwsDeploy(),
 		},
 	}
 
