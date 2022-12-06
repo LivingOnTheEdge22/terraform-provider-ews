@@ -33,4 +33,5 @@ resource "ews_lambda_deploy" "director_lambda_deploy" {
   account_id       = -1
   lambda_name      = "leaked-redirector"
   filter_path      = "/login"
+  depends_on = [ews_lambda_compile.director_lambda_compile]
 }
