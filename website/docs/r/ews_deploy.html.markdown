@@ -5,7 +5,7 @@ sidebar_current: "docs-ews-resource-ews_deploy"
 description: |- Provides an EWS Deploy lambda resource.
 ---
 
-# ews_compile
+# ews_lambda_deploy
 
 Deploy a previously compiled lambda. 
 Note that import and delete actions are temporary unavailable.

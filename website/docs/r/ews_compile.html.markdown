@@ -5,7 +5,7 @@ sidebar_current: "docs-ews-resource-ews_compile"
 description: |- Provides an EWS Compile lambda resource.
 ---
 
-# ews_compile
+# ews_lambda_compile
 
 Upload and compile lambda. Note that import and delete actions are temporary unavailable.
 

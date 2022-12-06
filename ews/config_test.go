@@ -41,18 +41,18 @@ func TestMissingAPIKey(t *testing.T) {
 }
 
 func TestMissingBaseURL(t *testing.T) {
-	config := Config{APIID: "foo", APIKey: "bar", BaseURL: ""}
+	config := Config{APIID: "foo", APIKey: "bar", baseURLEWS: ""}
 	client, err := config.Client()
 	if err == nil {
 		t.Errorf("Should have received an error, got a client: %q", client)
 	}
-	if err.Error() != missingBaseURLMessage {
+	if err.Error() != missingBaseURLEWSMessage {
 		t.Errorf("Should have received missing base URL message, got: %s", err)
 	}
 }
 
 func TestMissingBaseURLRev2(t *testing.T) {
-	config := Config{APIID: "foo", APIKey: "bar", BaseURL: "foobar.com"}
+	config := Config{APIID: "foo", APIKey: "bar", baseURLEWS: "foobar.com"}
 	client, err := config.Client()
 	if err == nil {
 		t.Errorf("Should have received an error, got a client: %q", client)
@@ -60,7 +60,7 @@ func TestMissingBaseURLRev2(t *testing.T) {
 }
 
 func TestMissingBaseURLAPI(t *testing.T) {
-	config := Config{APIID: "foo", APIKey: "bar", BaseURL: "foobar.com"}
+	config := Config{APIID: "foo", APIKey: "bar", baseURLEWS: "foobar.com"}
 	client, err := config.Client()
 	if err == nil {
 		t.Errorf("Should have received an error, got a client: %q", client)
@@ -76,13 +76,13 @@ func TestInvalidCredentials(t *testing.T) {
 	}))
 	defer server.Close()
 
-	config := Config{APIID: "bad", APIKey: "bad", BaseURL: server.URL}
+	config := Config{APIID: "bad", APIKey: "bad", baseURLEWS: server.URL}
 	client, err := config.Client()
 	if err == nil {
 		t.Errorf("Should have received an error, got a client: %q", client)
 	}
-	if !strings.HasPrefix(err.Error(), "Error from Incapsula service when checking account") {
-		t.Errorf("Should have received Incapsula service error, got: %s", err)
+	if !strings.HasPrefix(err.Error(), "Error from Ews service when checking account") {
+		t.Errorf("Should have received Ews service error, got: %s", err)
 	}
 }
 
@@ -95,7 +95,7 @@ func TestValidCredentials(t *testing.T) {
 	}))
 	defer server.Close()
 
-	config := Config{APIID: "good", APIKey: "good", BaseURL: server.URL}
+	config := Config{APIID: "good", APIKey: "good", baseURLEWS: server.URL}
 	client, err := config.Client()
 	if err != nil {
 		t.Errorf("Should not have received an error, got: %s", err)

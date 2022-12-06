@@ -22,7 +22,7 @@ const contentTypeApplicationZip = "application/zip"
 
 const durationOfRetriesInSeconds = 30
 
-// Client represents an internal client that brokers calls to the Incapsula API
+// Client represents an internal client that brokers calls to the Ews API
 type Client struct {
 	config          *Config
 	httpClient      *http.Client
@@ -191,7 +191,7 @@ func SetHeaders(c *Client, req *http.Request, contentType string, operation stri
 }
 
 func (c *Client) executeRequest(req *http.Request) (*http.Response, error) {
-	//if "read" action then we want to allow retries in case of timeout from incapsula service
+	//if "read" action then we want to allow retries in case of timeout from ews service
 	operation := req.Header.Get("x-tf-operation")
 	if req.Method == http.MethodGet || (req.Method == http.MethodPost && strings.HasPrefix(strings.ToLower(operation), "read")) {
 		var responseOnRequest *http.Response
@@ -199,12 +199,12 @@ func (c *Client) executeRequest(req *http.Request) (*http.Response, error) {
 		resource.Retry(durationOfRetriesInSeconds*time.Second, func() *resource.RetryError {
 			responseOnRequest, errorOnRequest = c.httpClient.Do(req)
 			if errorOnRequest != nil {
-				log.Printf("[ERROR] Error from Incapsula service when reading resource")
+				log.Printf("[ERROR] Error from Ews service when reading resource")
 				return resource.NonRetryableError(errorOnRequest)
 			}
 			if responseOnRequest.StatusCode == 502 {
-				log.Printf("[WARN] Error from Incapsula service when reading resource, performing retry")
-				return resource.RetryableError(fmt.Errorf("error code 502 from incapsula service when reading resource, performing retry"))
+				log.Printf("[WARN] Error from Ews service when reading resource, performing retry")
+				return resource.RetryableError(fmt.Errorf("error code 502 from ews service when reading resource, performing retry"))
 			}
 			return nil
 		})

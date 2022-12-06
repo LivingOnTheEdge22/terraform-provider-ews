@@ -14,11 +14,11 @@ func init() {
 
 	descriptions = map[string]string{
 		"api_id": "The API identifier for API operations. You can retrieve this\n" +
-			"from the Incapsula management console. Can be set via EWS_API_ID " +
+			"from the Ews management console. Can be set via EWS_API_ID " +
 			"environment variable.",
 
 		"api_key": "The API key for API operations. You can retrieve this\n" +
-			"from the Incapsula management console. Can be set via EWS_API_KEY " +
+			"from the Ews management console. Can be set via EWS_API_KEY " +
 			"environment variable.",
 
 		"base_url_ews": "The base URL for API operations. Used for provider development.",

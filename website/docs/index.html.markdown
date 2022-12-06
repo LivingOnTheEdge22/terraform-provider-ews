@@ -1,12 +1,12 @@
 ---
-layout: "incapsula"
-page_title: "Provider: Incapsula"
-sidebar_current: "docs-incapsula-index"
+layout: "ews"
+page_title: "Provider: Ews"
+sidebar_current: "docs-ews-index"
 description: |-
-  The Incapsula provider is used to interact with resources supported by Imperva. The provider needs to be configured with the proper credentials before it can be used.
+  The Ews provider is used to interact with resources supported by Imperva. The provider needs to be configured with the proper credentials before it can be used.
 ---
 
-# Incapsula Provider
+# Ews Provider
 
 The EWS provider is used to interact with resources supported by Imperva Edge services. The provider needs to be configured with the proper credentials before it can be used.
 
@@ -15,7 +15,7 @@ Use the navigation to the left to read about the available resources.
 ## Example Usage
 
 ```hcl
-# Configure the Incapsula provider
+# Configure the Ews provider
 provider "ews" {
   api_id = var.ews_api_id
   api_key = var.ews_api_key
@@ -42,7 +42,7 @@ resource "ews_lambda_deploy" "director_lambda_deploy" {
 
 The following arguments are supported:
 
-* `api_id` - (Required) The Incapsula API id associated with the account. This can also be
-  specified with the `INCAPSULA_API_ID` shell environment variable.
-* `api_key` - (Required) The Incapsula API key. This can also be specified with the 
-  `INCAPSULA_API_KEY` shell environment variable.
+* `api_id` - (Required) The Ews API id associated with the account. This can also be
+  specified with the `EWS_API_ID` shell environment variable.
+* `api_key` - (Required) The Ews API key. This can also be specified with the 
+  `EWS_API_KEY` shell environment variable.

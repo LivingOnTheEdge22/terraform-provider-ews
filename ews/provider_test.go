@@ -27,7 +27,7 @@ func ThreeValidPoPs() []string {
 func init() {
 	testAccProvider = Provider()
 	testAccProviders = map[string]*schema.Provider{
-		"incapsula": testAccProvider,
+		"ews": testAccProvider,
 	}
 }
 
@@ -43,12 +43,12 @@ func TestProvider_impl(t *testing.T) {
 
 func testAccPreCheck(t *testing.T) {
 	testAccProviderConfigure.Do(func() {
-		if v := os.Getenv("INCAPSULA_API_ID"); v == "" {
-			t.Fatal("INCAPSULA_API_ID must be set for acceptance tests")
+		if v := os.Getenv("EWS_API_ID"); v == "" {
+			t.Fatal("EWS_API_ID must be set for acceptance tests")
 		}
 
-		if v := os.Getenv("INCAPSULA_API_KEY"); v == "" {
-			t.Fatal("INCAPSULA_API_KEY must be set for acceptance tests")
+		if v := os.Getenv("EWS_API_KEY"); v == "" {
+			t.Fatal("EWS_API_KEY must be set for acceptance tests")
 		}
 
 		err := testAccProvider.Configure(context.Background(), terraform.NewResourceConfigRaw(nil))
