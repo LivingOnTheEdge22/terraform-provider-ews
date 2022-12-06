@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"io"
+	"io/ioutil"
 	"log"
 	"mime/multipart"
 	"net/http"
@@ -80,8 +81,7 @@ func (c *Client) DoJsonRequestWithCustomHeaders(method string, url string, data 
 		return nil, fmt.Errorf("Error preparing request: %s", err)
 	}
 
-	//SetHeaders(c, req, contentTypeApplicationJson, operation, headers)
-	SetHeaders(c, req, contentTypeApplicationZip, operation, headers)
+	SetHeaders(c, req, contentTypeApplicationJson, operation, headers)
 
 	return c.executeRequest(req)
 }
@@ -117,7 +117,7 @@ func GetRequestParamsWithCaid(accountId int) map[string]string {
 	return params
 }
 
-func (c *Client) DoFormDataRequestWithHeaders(method string, url string, data []byte, contentType string, wasmId, filterPath string, deploy bool) (*http.Response, error) {
+func (c *Client) DoFormDataRequestWithHeaders(method, url string, data []byte, contentType, wasmId, filterPath string, deploy bool) (*http.Response, error) {
 	req, err := PrepareJsonRequest(method, url, data)
 	if err != nil {
 		return nil, fmt.Errorf("Error preparing request: %s", err)
@@ -125,7 +125,34 @@ func (c *Client) DoFormDataRequestWithHeaders(method string, url string, data []
 
 	//SetHeaders(c, req, contentType, operation, nil)
 	SetHeadersNew(c, req, contentType, wasmId, filterPath, deploy)
+	log.Printf("[DEBUG] DoFormDataRequestWithHeaders request: %v\n", *req)
 	return c.executeRequest(req)
+}
+
+func (c *Client) sendBinaryRequest(method, url, lambdaPath, wasmId, filterPath string, deploy bool) (*http.Response, error) {
+
+	wasmZipFile, err := ioutil.ReadFile(lambdaPath)
+	if err != nil {
+		panic(err)
+	}
+
+	payload := strings.NewReader(string(wasmZipFile))
+
+	client := &http.Client{}
+	req, err := http.NewRequest(method, url, payload)
+
+	if err != nil {
+		return nil, fmt.Errorf("Error preparing request: %s", err)
+	}
+
+	SetHeadersNew(c, req, contentTypeApplicationZip, wasmId, filterPath, deploy)
+
+	responseOnRequest, errorOnRequest := client.Do(req)
+	if errorOnRequest != nil {
+		return nil, fmt.Errorf("Error on request: %s", errorOnRequest)
+	}
+
+	return responseOnRequest, errorOnRequest
 }
 
 func PrepareJsonRequest(method string, url string, data []byte) (*http.Request, error) {

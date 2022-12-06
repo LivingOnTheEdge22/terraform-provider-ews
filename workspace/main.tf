@@ -23,10 +23,14 @@ provider "ews" {
   base_url_ews = "https://ews-management.abp-monsters.com"
 }
 
-resource "ews_lambda" "first_lambda" {
-	account_id       = -1
-	lambda           = "leaked-director.zip"
-	lambda_name      = "leaked-redirector"
-	filter_path      = "/login"
-	deployed         = false
+resource "ews_lambda_compile" "director_lambda_compile" {
+  account_id       = -1
+  lambda_name      = "leaked-redirector"
+  lambda_path      = "./leaked-director.zip"
+}
+
+resource "ews_lambda_deploy" "director_lambda_deploy" {
+  account_id       = -1
+  lambda_name      = "leaked-redirector"
+  filter_path      = "/login"
 }

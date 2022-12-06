@@ -3,6 +3,8 @@ package ews
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"log"
+	"strconv"
+	"time"
 )
 
 func resourceEwsCompile() *schema.Resource {
@@ -47,9 +49,8 @@ func resourceEwsCompileUpdate(d *schema.ResourceData, m interface{}) error {
 	if err != nil {
 		return err
 	}
-	//todo Raphy - new id generation
-	id := "generated string"
-	d.SetId(id)
+
+	d.SetId(strconv.FormatInt(time.Now().Unix(), 10))
 	log.Printf("[INFO] Created EWS with ID: %s\n", d.Id())
 
 	return resourceEwsCompileRead(d, m)
