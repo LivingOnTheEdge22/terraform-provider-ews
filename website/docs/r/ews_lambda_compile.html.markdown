@@ -1,7 +1,7 @@
 ---
 layout: "ews"
-page_title: "EWS: ews_compile"
-sidebar_current: "docs-ews-resource-ews_compile"
+page_title: "EWS: ews_lambda_compile"
+sidebar_current: "docs-ews-resource-ews_lambda_compile"
 description: |- Provides an EWS Compile lambda resource.
 ---
 
@@ -11,7 +11,7 @@ Upload and compile lambda. Note that import and delete actions are temporary una
 
 ## Example Usage
 
-### Basic Usage - Ews Compile
+### Basic Usage - Ews Lambda Compile
 
 ```hcl
 resource "ews_lambda_compile" "director_lambda_compile" {
@@ -25,9 +25,9 @@ resource "ews_lambda_compile" "director_lambda_compile" {
 
 The following arguments are supported:
 
-* `account_id` - (Required) Account to operate on .
-* `lambda_name` - (Optional) Lambda name 
-* `lambda_path` - (Optional) Path to a local zip containing all files needed to compile lambda.
+* `account_id` - (Required) Account to operate on
+* `lambda_name` - (Optional) Lambda name
+* `lambda_path` - (Optional) Path to a local zip containing all files needed to compile lambda
 
 ## Attributes Reference
 
