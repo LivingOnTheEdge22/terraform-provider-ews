@@ -16,8 +16,9 @@ Upload and compile lambda. Note that import and delete actions are temporary una
 ```hcl
 resource "ews_lambda_compile" "director_lambda_compile" {
   account_id       = -1
+  site_id          = 444444
   lambda_name      = "leaked-redirector"
-  lambda_path      = "./leaked-director.zip"
+  lambda_path      = "../leaked-redirector/leaked-redirector.zip"
 }
 ```
 
@@ -25,9 +26,10 @@ resource "ews_lambda_compile" "director_lambda_compile" {
 
 The following arguments are supported:
 
-* `account_id` - (Required) Account to operate on
-* `lambda_name` - (Optional) Lambda name
-* `lambda_path` - (Optional) Path to a local zip containing all files needed to compile lambda
+* `account_id`  - (Required) Account to operate on.
+* `site_id`     - (Required) Numeric identifier of the site.
+* `lambda_name` - (Required) Lambda name.
+* `lambda_path` - (Required) Path to a local zip containing all files needed to compile lambda.
 
 ## Attributes Reference
 

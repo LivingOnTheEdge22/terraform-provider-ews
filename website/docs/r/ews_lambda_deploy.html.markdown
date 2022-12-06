@@ -9,6 +9,7 @@ description: |- Provides an EWS Deploy lambda resource.
 
 Deploy a previously compiled lambda. 
 Note that import and delete actions are temporary unavailable.
+Use `depends_on` to ensure compile will run before deploy.
 
 ## Example Usage
 
@@ -17,9 +18,10 @@ Note that import and delete actions are temporary unavailable.
 ```hcl
 resource "ews_lambda_deploy" "director_lambda_deploy" {
   account_id       = -1
+  site_id          = 444444
   lambda_name      = "leaked-redirector"
   filter_path      = "/login"
-  depends_on = [ews_lambda_compile.director_lambda_compile]
+  depends_on       = [ews_lambda_compile.director_lambda_compile]
 }
 ```
 
@@ -27,10 +29,10 @@ resource "ews_lambda_deploy" "director_lambda_deploy" {
 
 The following arguments are supported:
 
-* `account_id` - (Required) Account to operate on 
-* `lambda_name` - (Optional) Lambda name
-* `filter_path` - (Optional) A site path to deploy the lambda on
-* `depends_on` - (Optional) To ensure compile will run before deploy
+* `account_id` - (Required) Account to operate on.
+* `site_id` - (Required) Numeric identifier of the site.
+* `lambda_name` - (Required) Lambda name.
+* `filter_path` - (Required) A site path to deploy the lambda on.
 
 ## Attributes Reference
 
