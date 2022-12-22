@@ -1,6 +1,8 @@
 ---
+layout: "ews"
 subcategory: "Compile"
 page_title: "EWS: ews_lambda_compile"
+sidebar_current: "docs-ews-resource-ews_lambda_compile"
 description: |-
   Provides an EWS Compile lambda resource.
 ---
