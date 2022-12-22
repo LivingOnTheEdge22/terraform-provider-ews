@@ -25,14 +25,16 @@ provider "ews" {
 # Upload Lambda
 resource "ews_lambda_compile" "director_lambda_compile" {
   account_id       = -1
+  site_id          = 444444
   lambda_name      = "leaked-redirector"
-  lambda_path      = "./leaked-director.zip"
+  lambda_path      = "../leaked-redirector/leaked-redirector.zip"
 }
 
 # Deploy Lambda
 resource "ews_lambda_deploy" "director_lambda_deploy" {
   account_id       = -1
-  lambda_name      = ews_lambda_compile.director_lambda.lambda_name
+  site_id          = 444444
+  lambda_name      = "leaked-redirector"
   filter_path      = "/login"
 }
 

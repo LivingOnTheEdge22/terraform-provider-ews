@@ -1,10 +1,9 @@
 package ews
 
 import (
+	"fmt"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"log"
-	"strconv"
-	"time"
 )
 
 func resourceEwsCompile() *schema.Resource {
@@ -13,13 +12,16 @@ func resourceEwsCompile() *schema.Resource {
 		Read:   resourceEwsCompileRead,
 		Update: resourceEwsCompileUpdate,
 		Delete: resourceEwsCompileDelete,
-		//Importer: &schema.ResourceImporter{
-		//	StateContext: schema.ImportStatePassthroughContext,
-		//},
+
 		Schema: map[string]*schema.Schema{
 			// Required Arguments
 			"account_id": {
 				Description: "account id",
+				Type:        schema.TypeString,
+				Required:    true,
+			},
+			"site_id": {
+				Description: "Site id",
 				Type:        schema.TypeString,
 				Required:    true,
 			},
@@ -50,7 +52,9 @@ func resourceEwsCompileUpdate(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
-	d.SetId(strconv.FormatInt(time.Now().Unix(), 10))
+	syntheticId := fmt.Sprintf("%s-%s", d.Get("lambda_name").(string), d.Get("site_id").(string))
+	d.SetId(syntheticId)
+
 	log.Printf("[INFO] Created EWS with ID: %s\n", d.Id())
 
 	return resourceEwsCompileRead(d, m)
