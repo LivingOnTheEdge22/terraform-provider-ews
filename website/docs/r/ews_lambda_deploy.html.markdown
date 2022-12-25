@@ -5,6 +5,7 @@ page_title: "EWS: ews_lambda_deploy"
 sidebar_current: "docs-ews-resource-ews_lambda_deploy"
 description: |-
   Provides an EWS Deploy lambda resource.
+published: false
 ---
 
 # ews_lambda_deploy
